@@ -6,7 +6,6 @@ import {
   View,
   SafeAreaView,
   Image,
-  Button,
   Alert,
   Platform,
   StatusBar,
@@ -20,22 +19,12 @@ import WelcomeScreen from "./app/screens/WelcomeScreen";
 import ViewImageScreen from "./app/screens/ViewImageScreen";
 import AppText from "./app/components/AppText";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import AppButton from "./app/components/AppButton";
 
 export default function App() {
-  const handleTxtPress = () =>
-    Alert.alert("button tapped", "message", [
-      { text: "Yes", onPress: () => console.log("yes") },
-      { text: "No", onPress: () => console.log("No") },
-    ]); //console.log("Text pressed");
-  //console.log(Dimensions.get("screen"));
   const { landscape } = useDeviceOrientation();
 
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <AppText>I love react native</AppText>
-      <MaterialCommunityIcons name="email" size={60} color="dodgerblue" />
-    </View>
-  );
+  return <WelcomeScreen />;
 }
 
 const styles = StyleSheet.create({
