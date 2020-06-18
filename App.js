@@ -2,17 +2,10 @@ import React from "react";
 import { StyleSheet, Platform, StatusBar, View } from "react-native";
 
 import Card from "./app/components/Card";
+import ListingDetailsScreen from "./app/screens/ListingDetailsScreen";
 
 export default function App() {
-  return (
-    <View style={styles.cards}>
-      <Card
-        title="Red jacket for sale"
-        subTitle="$100"
-        image={require("./app/assets/jacket.jpg")}
-      />
-    </View>
-  );
+  return <ListingDetailsScreen />;
 }
 
 const styles = StyleSheet.create({
