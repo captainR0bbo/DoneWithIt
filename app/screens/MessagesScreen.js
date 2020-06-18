@@ -4,6 +4,7 @@ import { FlatList, StyleSheet, View } from "react-native";
 import ListItem from "../components/ListItem";
 import Screen from "../components/Screen";
 import ListItemSeparator from "../components/ListItemSeparator";
+import ListItemDeleteAction from "../components/ListItemDeleteAction";
 
 const messages = [
   {
@@ -27,6 +28,7 @@ function MessagesScreen(props) {
         keyExtractor={(message) => message.id.toString()}
         renderItem={({ item }) => (
           <ListItem
+            renderRightActions={ListItemDeleteAction}
             onPress={() => console.log("Message selected", item)}
             title={item.title}
             subTitle={item.description}
