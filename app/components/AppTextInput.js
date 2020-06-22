@@ -15,7 +15,7 @@ function AppTextInput({ icon, ...otherProps }) {
           style={styles.icon}
         />
       )}
-      <TextInput style={defaultStyles.text} {...otherProps} />
+      <TextInput style={[styles.input, defaultStyles.text]} {...otherProps} />
     </View>
   );
 }
@@ -30,7 +30,11 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   icon: {
-    margin: 10,
+    margin: 20,
+  },
+  input: {
+    flexDirection: "row",
+    flex: 1,
   },
 });
 
