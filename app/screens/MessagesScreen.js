@@ -10,7 +10,8 @@ const initialMessages = [
   {
     id: 1,
     title: "T1",
-    description: "D1",
+    description:
+      "D1 this is a really long message not sure how this is going to look but probabl not good",
     image: require("../assets/mosh.jpg"),
   },
   {
@@ -45,6 +46,7 @@ function MessagesScreen(props) {
             subTitle={item.description}
             image={item.image}
             showChevron={true}
+            numberOfLines={2}
           />
         )}
         ItemSeparatorComponent={ListItemSeparator}
@@ -54,7 +56,7 @@ function MessagesScreen(props) {
             {
               id: 2,
               title: "T2",
-              description: "D2",
+              description: "D2 refreshed",
               image: require("../assets/mosh.jpg"),
             },
           ]);
