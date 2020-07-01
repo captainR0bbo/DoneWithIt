@@ -40,17 +40,19 @@ function ListingEditScreen(props) {
           textContentType="name"
         />
         <AppFormField
-          //icon="account"
           keyboardType="decimal-pad"
+          maxLength={8}
           name="price"
           placeholder="Price"
           textContentType="none"
+          width={120}
         />
         <AppFormPicker
           icon="account"
           items={categories}
           name="category"
           placeholder="Categories"
+          width="50%"
         />
         <AppFormField
           keyboardType="decimal-pad"
