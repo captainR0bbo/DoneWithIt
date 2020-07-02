@@ -87,6 +87,7 @@ function ListingEditScreen(props) {
         <AppFormField
           autoCapitalize="words"
           autoCorrect={false}
+          maxLength={255}
           name="title"
           placeholder="Title"
           textContentType="name"
@@ -110,7 +111,10 @@ function ListingEditScreen(props) {
         />
         <AppFormField
           keyboardType="decimal-pad"
+          maxLength={255}
+          multiline
           name="description"
+          numberOfLines={3}
           placeholder="Description"
           textContentType="none"
         />
