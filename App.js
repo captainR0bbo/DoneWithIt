@@ -10,11 +10,41 @@ import ViewImageScreen from "./app/screens/ViewImageScreen";
 import WelcomeScreen from "./app/screens/WelcomeScreen";
 import Screen from "./app/components/Screen";
 import * as ImagePicker from "expo-image-picker";
+import * as Permissions from "expo-permissions";
+import { Button, Image } from "react-native";
+import AppImageInput from "./app/components/AppImageInput";
 
 export default function App() {
-  useEffect(async () => {
-    const result = await ImagePicker.requestCameraRollPermissionsAsync();
+  const [imageUri, setImageUri] = useState();
+  const requestPermission = async () => {
+    const { granted } = await ImagePicker.requestCameraRollPermissionsAsync();
+    if (!granted) alert("You need to enable permission to access the library");
+  };
+  useEffect(() => {
+    requestPermission();
   }, []);
 
-  return <Screen></Screen>;
+  const selectImage = async () => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync();
+      if (!result.cancelled) setImageUri(result.uri);
+    } catch (error) {
+      console.log("Error reading image");
+    }
+  };
+
+  return (
+    <Screen>
+      <AppImageInput
+        imageUri={imageUri}
+        onChangeImage={(uri) => setImageUri(uri)}
+      />
+    </Screen>
+  );
+  /*return (
+    <Screen>
+      <Button title="Select image" onPress={selectImage} />
+      <Image source={{ uri: imageUri }} style={{ width: 200, height: 200 }} />
+    </Screen>
+  );*/
 }
