@@ -16,24 +16,26 @@ import AppImageInput from "./app/components/AppImageInput";
 import AppImageInputList from "./app/components/AppImageInputList";
 
 export default function App() {
-  const [imageUris = [], setImageUris] = useState();
+  const [imageUris, setImageUris] = useState([]);
 
   const addImage = (uri) => {
-    imageUris.push({ id: imageUris.length.toString(), imageUri: uri });
-    setImageUris(imageUris);
+    //imageUris.push({ id: imageUris.length.toString(), imageUri: uri });
+    //setImageUris(imageUris);
+    setImageUris([...imageUris, uri]);
   };
 
   const removeImage = (uri) => {
-    imageUris.filter((imageUri) => imageUri !== uri);
-    setImageUris(imageUris);
+    //imageUris.filter((imageUri) => imageUri !== uri);
+    //setImageUris(imageUris);
+    setImageUris(imageUris.filter((imageUri) => imageUri !== uri));
   };
 
   return (
     <Screen>
       <AppImageInputList
         imageUris={imageUris}
-        onAddImage={(uri) => addImage(uri)}
-        onRemoveImage={(uri) => removeImage(uri)}
+        onAddImage={addImage}
+        onRemoveImage={removeImage}
       />
     </Screen>
   );
