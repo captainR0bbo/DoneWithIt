@@ -25,8 +25,8 @@ export default function App() {
   const removeImage = (uri) => {
     setImageUris(imageUris.filter((imageUri) => imageUri !== uri));
   };
-
-  return (
+  return <ListingEditScreen />;
+  /*return (
     <Screen>
       <AppImageInputList
         imageUris={imageUris}
@@ -34,7 +34,7 @@ export default function App() {
         onRemoveImage={removeImage}
       />
     </Screen>
-  );
+  );*/
   /*return (
     <Screen>
       <AppImageInput
