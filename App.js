@@ -19,14 +19,10 @@ export default function App() {
   const [imageUris, setImageUris] = useState([]);
 
   const addImage = (uri) => {
-    //imageUris.push({ id: imageUris.length.toString(), imageUri: uri });
-    //setImageUris(imageUris);
     setImageUris([...imageUris, uri]);
   };
 
   const removeImage = (uri) => {
-    //imageUris.filter((imageUri) => imageUri !== uri);
-    //setImageUris(imageUris);
     setImageUris(imageUris.filter((imageUri) => imageUri !== uri));
   };
 
