@@ -6,6 +6,11 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import Screen from "./app/components/Screen";
+import LoginScreen from "./app/screens/LoginScreen";
+import RegisterScreen from "./app/screens/RegisterScreen";
+import WelcomeScreen from "./app/screens/WelcomeScreen";
+import AuthNavigator from "./app/navigators/AuthNavigator";
+import AppNavigator from "./app/navigators/AppNavigator";
 
 const Link = () => {
   const navigation = useNavigation();
@@ -89,7 +94,12 @@ const TabNavigator = () => (
 export default function App() {
   return (
     <NavigationContainer>
-      <TabNavigator />
+      <AppNavigator />
     </NavigationContainer>
   );
+  /*return (
+    <NavigationContainer>
+      <TabNavigator />
+    </NavigationContainer>
+  );*/
 }
