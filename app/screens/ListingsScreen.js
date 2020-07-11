@@ -12,12 +12,14 @@ const listings = [
     title: "Red jacket for sale",
     price: 100,
     image: require("../assets/jacket.jpg"),
+    userImage: require("../assets/mosh.jpg"),
   },
   {
     id: 2,
     title: "Couch in great condition",
     price: 1000,
     image: require("../assets/couch.jpg"),
+    userImage: require("../assets/mosh.jpg"),
   },
 ];
 function ListingsScreen(props) {
@@ -29,7 +31,7 @@ function ListingsScreen(props) {
         keyExtractor={(listing) => listing.id.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() => navigation.navigate("ListingDetailsScreen", item.id)}
+            onPress={() => navigation.navigate("ListingDetailsScreen", item)}
           >
             <Card
               title={item.title}
