@@ -6,6 +6,7 @@ import ListItem from "../components/lists/ListItem";
 import colors from "../config/colors";
 import Icon from "../components/Icon";
 import ListItemSeparator from "../components/lists/ListItemSeparator";
+import { useNavigation } from "@react-navigation/native";
 
 const menuItems = [
   {
@@ -14,6 +15,7 @@ const menuItems = [
       name: "format-list-bulleted",
       backgroundColor: colors.primary,
     },
+    screen: "ListingsScreen",
   },
   {
     title: "My Messages",
@@ -21,10 +23,12 @@ const menuItems = [
       name: "email",
       backgroundColor: colors.secondary,
     },
+    screen: "MessagesScreen",
   },
 ];
 
 function AccountScreen(props) {
+  const navigation = useNavigation();
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>
@@ -48,6 +52,7 @@ function AccountScreen(props) {
                   backgroundColor={item.icon.backgroundColor}
                 />
               }
+              onPress={() => navigation.navigate(item.screen, item)}
             />
           )}
         />
