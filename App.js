@@ -11,6 +11,7 @@ import RegisterScreen from "./app/screens/RegisterScreen";
 import WelcomeScreen from "./app/screens/WelcomeScreen";
 import AuthNavigator from "./app/navigators/AuthNavigator";
 import AppNavigator from "./app/navigators/AppNavigator";
+import NavigationTheme from "./app/navigators/NavigationTheme";
 
 const Link = () => {
   const navigation = useNavigation();
@@ -93,7 +94,7 @@ const TabNavigator = () => (
 
 export default function App() {
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={NavigationTheme}>
       <AppNavigator />
     </NavigationContainer>
   );
