@@ -4,20 +4,18 @@ import { View, Image, StyleSheet } from "react-native";
 import AppText from "../components/AppText";
 import colors from "../config/colors";
 import ListItem from "../components/lists/ListItem";
-import { useRoute } from "@react-navigation/native";
 
-function ListingDetailsScreen(props) {
-  const route = useRoute();
-
+function ListingDetailsScreen({ route }) {
+  const listing = route.params;
   return (
     <View>
-      <Image style={styles.image} source={route.params.image} />
+      <Image style={styles.image} source={listing.image} />
       <View style={styles.detailsContainer}>
-        <AppText style={styles.title}>{route.params.title}</AppText>
-        <AppText style={styles.price}>{route.params.price}</AppText>
+        <AppText style={styles.title}>{listing.title}</AppText>
+        <AppText style={styles.price}>${listing.price}</AppText>
         <View style={styles.userContainer}>
           <ListItem
-            image={route.params.userImage}
+            image={listing.userImage}
             title="Mosh Homedani"
             subTitle="5 listings"
           />

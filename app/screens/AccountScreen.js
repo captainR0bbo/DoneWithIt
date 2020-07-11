@@ -6,7 +6,6 @@ import ListItem from "../components/lists/ListItem";
 import colors from "../config/colors";
 import Icon from "../components/Icon";
 import ListItemSeparator from "../components/lists/ListItemSeparator";
-import { useNavigation } from "@react-navigation/native";
 
 const menuItems = [
   {
@@ -27,8 +26,7 @@ const menuItems = [
   },
 ];
 
-function AccountScreen(props) {
-  const navigation = useNavigation();
+function AccountScreen({ navigation }) {
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>

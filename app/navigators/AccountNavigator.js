@@ -1,5 +1,4 @@
 import React from "react";
-import { View } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import AccountScreen from "../screens/AccountScreen";
 import MessagesScreen from "../screens/MessagesScreen";

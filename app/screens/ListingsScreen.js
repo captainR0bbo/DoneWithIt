@@ -1,6 +1,5 @@
 import React from "react";
-import { FlatList, StyleSheet, TouchableOpacity } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { FlatList, StyleSheet } from "react-native";
 
 import Screen from "../components/Screen";
 import Card from "../components/Card";
@@ -22,23 +21,19 @@ const listings = [
     userImage: require("../assets/mosh.jpg"),
   },
 ];
-function ListingsScreen(props) {
-  const navigation = useNavigation();
+function ListingsScreen({ navigation }) {
   return (
     <Screen style={styles.screen}>
       <FlatList
         data={listings}
         keyExtractor={(listing) => listing.id.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity
+          <Card
+            title={item.title}
+            subTitle={"$" + item.price}
+            image={item.image}
             onPress={() => navigation.navigate("ListingDetailsScreen", item)}
-          >
-            <Card
-              title={item.title}
-              subTitle={"$" + item.price}
-              image={item.image}
-            />
-          </TouchableOpacity>
+          />
         )}
       />
     </Screen>
