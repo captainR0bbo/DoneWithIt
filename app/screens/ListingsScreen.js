@@ -1,5 +1,6 @@
 import React from "react";
-import { FlatList, StyleSheet } from "react-native";
+import { FlatList, StyleSheet, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import Screen from "../components/Screen";
 import Card from "../components/Card";
@@ -20,17 +21,22 @@ const listings = [
   },
 ];
 function ListingsScreen(props) {
+  const navigation = useNavigation();
   return (
     <Screen style={styles.screen}>
       <FlatList
         data={listings}
         keyExtractor={(listing) => listing.id.toString()}
         renderItem={({ item }) => (
-          <Card
-            title={item.title}
-            subTitle={"$" + item.price}
-            image={item.image}
-          />
+          <TouchableOpacity
+            onPress={() => navigation.navigate("ListingDetailsScreen", item.id)}
+          >
+            <Card
+              title={item.title}
+              subTitle={"$" + item.price}
+              image={item.image}
+            />
+          </TouchableOpacity>
         )}
       />
     </Screen>
