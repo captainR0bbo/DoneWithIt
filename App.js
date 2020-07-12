@@ -9,9 +9,9 @@ import Screen from "./app/components/Screen";
 import LoginScreen from "./app/screens/LoginScreen";
 import RegisterScreen from "./app/screens/RegisterScreen";
 import WelcomeScreen from "./app/screens/WelcomeScreen";
-import AuthNavigator from "./app/navigators/AuthNavigator";
-import AppNavigator from "./app/navigators/AppNavigator";
-import NavigationTheme from "./app/navigators/NavigationTheme";
+import AuthNavigator from "./app/navigation/AuthNavigator";
+import AppNavigator from "./app/navigation/AppNavigator";
+import NavigationTheme from "./app/navigation/NavigationTheme";
 
 const Link = () => {
   const navigation = useNavigation();
