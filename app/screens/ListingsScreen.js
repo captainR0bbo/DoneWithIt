@@ -32,10 +32,11 @@ function ListingsScreen({ navigation }) {
           data={getListingsApi.data}
           keyExtractor={(listing) => listing.id.toString()}
           renderItem={({ item }) => (
+            //<AppText>{item.images.length ? "true" : "false"}</AppText>
             <Card
               title={item.title}
               subTitle={"$" + item.price}
-              imageUrl={item.images[0].url}
+              imageUrl={item.images.length ? item.images[0].url : null}
               onPress={() => navigation.navigate(routes.LISTING_DETAILS, item)}
             />
           )}

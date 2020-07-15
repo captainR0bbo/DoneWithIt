@@ -8,7 +8,12 @@ function Card({ title, subTitle, imageUrl, onPress }) {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.card}>
-        <Image style={styles.image} source={{ uri: imageUrl }} />
+        <Image
+          style={styles.image}
+          source={
+            imageUrl ? { uri: imageUrl } : require("../assets/no-image.jpg")
+          }
+        />
         <View style={styles.detailsContainer}>
           <AppText style={styles.title}>{title}</AppText>
           <AppText style={styles.subTitle}>{subTitle}</AppText>

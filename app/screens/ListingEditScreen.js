@@ -12,6 +12,8 @@ import Screen from "../components/Screen";
 import CategoryPickerItem from "../components/CategoryPickerItem";
 import AppFormImagePicker from "../components/forms/AppFormImagePicker";
 import useLocation from "../hooks/useLocation";
+import listingsApi from "../api/listings";
+import useApi from "../hooks/useApi";
 
 const validationSchema = Yup.object().shape({
   images: Yup.array().min(1, "Please select at least one image."),
@@ -81,6 +83,27 @@ const categories = [
 function ListingEditScreen(props) {
   const location = useLocation();
 
+  const createListingApi = useApi(listingsApi.createListing);
+
+  const submitData = (values) => {
+    const formData = new FormData();
+    formData.append("title", values.title);
+    formData.append("price", values.price);
+    formData.append("description", values.description);
+    formData.append("categoryId", values.category.value);
+    formData.append("location", JSON.stringify(location));
+    values.images.map((uri) => {
+      var filename = uri.substring(uri.lastIndexOf("/") + 1);
+      formData.append("images", {
+        uri: uri,
+        type: "image/jpeg",
+        name: filename,
+      });
+    });
+
+    createListingApi.request(formData);
+  };
+
   return (
     <Screen style={styles.container}>
       <AppForm
@@ -91,7 +114,7 @@ function ListingEditScreen(props) {
           description: "",
           category: null,
         }}
-        onSubmit={(values) => console.log(location)}
+        onSubmit={(values) => submitData(values)} //console.log(values)}
         validationSchema={validationSchema}
       >
         <AppFormImagePicker name="images" />

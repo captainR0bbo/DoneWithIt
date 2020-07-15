@@ -8,8 +8,16 @@ import ListItem from "../components/lists/ListItem";
 function ListingDetailsScreen({ route }) {
   const listing = route.params;
   return (
+    // imageUrl ? { uri: imageUrl } : require("../assets/no-image.jpg")
     <View>
-      <Image style={styles.image} source={{ uri: listing.images[0].url }} />
+      <Image
+        style={styles.image}
+        source={
+          listing.images.length
+            ? { uri: listing.images[0].url }
+            : require("../assets/no-image.jpg")
+        }
+      />
       <View style={styles.detailsContainer}>
         <AppText style={styles.title}>{listing.title}</AppText>
         <AppText style={styles.price}>${listing.price}</AppText>
