@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Modal } from "react-native";
-import * as Progress from "react-native-progress";
+import { StyleSheet } from "react-native";
 import * as Yup from "yup";
 
 import {
@@ -8,15 +7,14 @@ import {
   AppFormField,
   AppFormPicker,
   SubmitButton,
-  ErrorMessage,
 } from "../components/forms";
 import Screen from "../components/Screen";
 import CategoryPickerItem from "../components/CategoryPickerItem";
 import AppFormImagePicker from "../components/forms/AppFormImagePicker";
 import useLocation from "../hooks/useLocation";
 import listingsApi from "../api/listings";
-import useApi from "../hooks/useApi";
 import colors from "../config/colors";
+import UploadProgressScreen from "./UploadProgressScreen";
 
 const validationSchema = Yup.object().shape({
   images: Yup.array().min(1, "Please select at least one image."),
@@ -87,113 +85,91 @@ function ListingEditScreen(props) {
   const location = useLocation();
 
   const [progress, setProgress] = useState();
+  const [uploadVisible, setUploadVisible] = useState(false);
 
-  const createListingApi = useApi(listingsApi.createListing);
-
-  const updateProgress = ({ loaded, total }) => {
-    if (total > 0) {
-      setProgress(loaded / total);
-    }
+  const updateProgress = (prog) => {
+    console.log(prog);
+    setProgress(prog);
   };
 
-  const submitData = (values) => {
-    const formData = new FormData();
-    formData.append("title", values.title);
-    formData.append("price", values.price);
-    formData.append("description", values.description);
-    formData.append("categoryId", values.category.value);
-    formData.append("location", JSON.stringify(location));
-    values.images.map((uri) => {
-      var filename = uri.substring(uri.lastIndexOf("/") + 1);
-      formData.append("images", {
-        uri: uri,
-        type: "image/jpeg",
-        name: filename,
-      });
-    });
+  const handleSubmit = async (listing, { resetForm }) => {
+    setProgress(0);
+    setUploadVisible(true);
+    const result = await listingsApi.addListing(
+      { ...listing, location },
+      setProgress
+    );
+    if (!result.ok) {
+      setUploadVisible(false);
+      return alert("Unable to post your listing, please try again!");
+    }
 
-    createListingApi.request(formData, updateProgress);
+    resetForm();
   };
 
   return (
-    <>
-      <Screen style={styles.container}>
-        <AppForm
-          initialValues={{
-            images: [],
-            title: "",
-            price: 0,
-            description: "",
-            category: null,
-          }}
-          onSubmit={(values) => submitData(values)} //console.log(values)}
-          validationSchema={validationSchema}
-        >
-          <AppFormImagePicker name="images" />
-          <AppFormField
-            autoCapitalize="words"
-            autoCorrect={false}
-            maxLength={255}
-            name="title"
-            placeholder="Title"
-            textContentType="name"
-          />
-          <AppFormField
-            keyboardType="decimal-pad"
-            maxLength={8}
-            name="price"
-            placeholder="Price"
-            textContentType="none"
-            width={120}
-          />
-          <AppFormPicker
-            icon="account"
-            items={categories}
-            name="category"
-            numberOfColumns={3}
-            PickerItemComponent={CategoryPickerItem}
-            placeholder="Categories"
-            width="50%"
-          />
-          <AppFormField
-            keyboardType="decimal-pad"
-            maxLength={255}
-            multiline
-            name="description"
-            numberOfLines={3}
-            placeholder="Description"
-            textContentType="none"
-          />
-          <SubmitButton title="Post" />
-        </AppForm>
-        <ErrorMessage
-          error="Couldn't post the listing. Try again."
-          visible={createListingApi.error}
+    <Screen style={styles.container}>
+      <UploadProgressScreen
+        color={colors.primary}
+        onDone={() => setUploadVisible(false)}
+        progress={progress}
+        visible={uploadVisible}
+      />
+      <AppForm
+        initialValues={{
+          images: [],
+          title: "",
+          price: 0,
+          description: "",
+          category: null,
+        }}
+        onSubmit={handleSubmit} //console.log(values)}
+        validationSchema={validationSchema}
+      >
+        <AppFormImagePicker name="images" />
+        <AppFormField
+          autoCapitalize="words"
+          autoCorrect={false}
+          maxLength={255}
+          name="title"
+          placeholder="Title"
+          textContentType="name"
         />
-      </Screen>
-      <Modal visible={createListingApi.loading} animationType="slide">
-        <Screen>
-          <Progress.Bar
-            borderWidth={0}
-            color={colors.primary}
-            progress={progress}
-            width={null}
-            style={styles.progress}
-          />
-        </Screen>
-      </Modal>
-    </>
+        <AppFormField
+          keyboardType="decimal-pad"
+          maxLength={8}
+          name="price"
+          placeholder="Price"
+          textContentType="none"
+          width={120}
+        />
+        <AppFormPicker
+          icon="account"
+          items={categories}
+          name="category"
+          numberOfColumns={3}
+          PickerItemComponent={CategoryPickerItem}
+          placeholder="Categories"
+          width="50%"
+        />
+        <AppFormField
+          keyboardType="decimal-pad"
+          maxLength={255}
+          multiline
+          name="description"
+          numberOfLines={3}
+          placeholder="Description"
+          textContentType="none"
+        />
+        <SubmitButton title="Post" />
+      </AppForm>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-  },
-  progress: {
-    height: 20,
-    marginTop: "80%",
-    //padding: 10,
   },
 });
 
