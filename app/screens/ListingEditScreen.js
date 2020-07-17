@@ -1,5 +1,6 @@
-import React from "react";
-import { StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, Modal } from "react-native";
+import * as Progress from "react-native-progress";
 import * as Yup from "yup";
 
 import {
@@ -7,6 +8,7 @@ import {
   AppFormField,
   AppFormPicker,
   SubmitButton,
+  ErrorMessage,
 } from "../components/forms";
 import Screen from "../components/Screen";
 import CategoryPickerItem from "../components/CategoryPickerItem";
@@ -14,6 +16,7 @@ import AppFormImagePicker from "../components/forms/AppFormImagePicker";
 import useLocation from "../hooks/useLocation";
 import listingsApi from "../api/listings";
 import useApi from "../hooks/useApi";
+import colors from "../config/colors";
 
 const validationSchema = Yup.object().shape({
   images: Yup.array().min(1, "Please select at least one image."),
@@ -83,7 +86,15 @@ const categories = [
 function ListingEditScreen(props) {
   const location = useLocation();
 
+  const [progress, setProgress] = useState();
+
   const createListingApi = useApi(listingsApi.createListing);
+
+  const updateProgress = ({ loaded, total }) => {
+    if (total > 0) {
+      setProgress(loaded / total);
+    }
+  };
 
   const submitData = (values) => {
     const formData = new FormData();
@@ -101,66 +112,88 @@ function ListingEditScreen(props) {
       });
     });
 
-    createListingApi.request(formData);
+    createListingApi.request(formData, updateProgress);
   };
 
   return (
-    <Screen style={styles.container}>
-      <AppForm
-        initialValues={{
-          images: [],
-          title: "",
-          price: 0,
-          description: "",
-          category: null,
-        }}
-        onSubmit={(values) => submitData(values)} //console.log(values)}
-        validationSchema={validationSchema}
-      >
-        <AppFormImagePicker name="images" />
-        <AppFormField
-          autoCapitalize="words"
-          autoCorrect={false}
-          maxLength={255}
-          name="title"
-          placeholder="Title"
-          textContentType="name"
+    <>
+      <Screen style={styles.container}>
+        <AppForm
+          initialValues={{
+            images: [],
+            title: "",
+            price: 0,
+            description: "",
+            category: null,
+          }}
+          onSubmit={(values) => submitData(values)} //console.log(values)}
+          validationSchema={validationSchema}
+        >
+          <AppFormImagePicker name="images" />
+          <AppFormField
+            autoCapitalize="words"
+            autoCorrect={false}
+            maxLength={255}
+            name="title"
+            placeholder="Title"
+            textContentType="name"
+          />
+          <AppFormField
+            keyboardType="decimal-pad"
+            maxLength={8}
+            name="price"
+            placeholder="Price"
+            textContentType="none"
+            width={120}
+          />
+          <AppFormPicker
+            icon="account"
+            items={categories}
+            name="category"
+            numberOfColumns={3}
+            PickerItemComponent={CategoryPickerItem}
+            placeholder="Categories"
+            width="50%"
+          />
+          <AppFormField
+            keyboardType="decimal-pad"
+            maxLength={255}
+            multiline
+            name="description"
+            numberOfLines={3}
+            placeholder="Description"
+            textContentType="none"
+          />
+          <SubmitButton title="Post" />
+        </AppForm>
+        <ErrorMessage
+          error="Couldn't post the listing. Try again."
+          visible={createListingApi.error}
         />
-        <AppFormField
-          keyboardType="decimal-pad"
-          maxLength={8}
-          name="price"
-          placeholder="Price"
-          textContentType="none"
-          width={120}
-        />
-        <AppFormPicker
-          icon="account"
-          items={categories}
-          name="category"
-          numberOfColumns={3}
-          PickerItemComponent={CategoryPickerItem}
-          placeholder="Categories"
-          width="50%"
-        />
-        <AppFormField
-          keyboardType="decimal-pad"
-          maxLength={255}
-          multiline
-          name="description"
-          numberOfLines={3}
-          placeholder="Description"
-          textContentType="none"
-        />
-        <SubmitButton title="Post" />
-      </AppForm>
-    </Screen>
+      </Screen>
+      <Modal visible={createListingApi.loading} animationType="slide">
+        <Screen>
+          <Progress.Bar
+            borderWidth={0}
+            color={colors.primary}
+            progress={progress}
+            width={null}
+            style={styles.progress}
+          />
+        </Screen>
+      </Modal>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     padding: 10,
+  },
+  progress: {
+    height: 20,
+    marginTop: "80%",
+    //padding: 10,
   },
 });
 
