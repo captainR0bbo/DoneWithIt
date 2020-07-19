@@ -19,5 +19,9 @@ export default function App() {
   };
 
   demo();
-  return null;
+  return (
+    <NavigationContainer theme={NavigationTheme}>
+      <AppNavigator />
+    </NavigationContainer>
+  );
 }
