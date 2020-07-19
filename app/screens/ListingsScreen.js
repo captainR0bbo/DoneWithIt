@@ -38,6 +38,7 @@ function ListingsScreen({ navigation }) {
               subTitle={"$" + item.price}
               imageUrl={item.images.length ? item.images[0].url : null}
               onPress={() => navigation.navigate(routes.LISTING_DETAILS, item)}
+              thumbnailUrl={item.images[0].thumbnailUrl}
             />
           )}
         />
