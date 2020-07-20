@@ -5,6 +5,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 
 import AppNavigator from "./app/navigation/AppNavigator";
 import NavigationTheme from "./app/navigation/NavigationTheme";
+import ConnectionStatus from "./app/components/ConnectionStatus";
 
 export default function App() {
   const demo = async () => {
@@ -20,8 +21,11 @@ export default function App() {
 
   demo();
   return (
-    <NavigationContainer theme={NavigationTheme}>
-      <AppNavigator />
-    </NavigationContainer>
+    <>
+      <ConnectionStatus />
+      <NavigationContainer theme={NavigationTheme}>
+        <AppNavigator />
+      </NavigationContainer>
+    </>
   );
 }

@@ -9,7 +9,6 @@ import ListItem from "../components/lists/ListItem";
 function ListingDetailsScreen({ route }) {
   const listing = route.params;
   return (
-    // imageUrl ? { uri: imageUrl } : require("../assets/no-image.jpg")
     <View>
       <Image
         style={styles.image}
