@@ -13,6 +13,7 @@ import useApi from "../hooks/useApi";
 
 function ListingsScreen({ navigation }) {
   const getListingsApi = useApi(listingsApi.getListings);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     getListingsApi.request();
@@ -31,6 +32,8 @@ function ListingsScreen({ navigation }) {
         <FlatList
           data={getListingsApi.data}
           keyExtractor={(listing) => listing.id.toString()}
+          refreshing={refreshing}
+          onRefresh={getListingsApi.request}
           renderItem={({ item }) => (
             //<AppText>{item.images.length ? "true" : "false"}</AppText>
             <Card
