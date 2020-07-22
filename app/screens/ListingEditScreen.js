@@ -119,7 +119,7 @@ function ListingEditScreen(props) {
         initialValues={{
           images: [],
           title: "",
-          price: 0,
+          price: "",
           description: "",
           category: null,
         }}
@@ -136,11 +136,10 @@ function ListingEditScreen(props) {
           textContentType="name"
         />
         <AppFormField
-          keyboardType="decimal-pad"
+          keyboardType="numeric"
           maxLength={8}
           name="price"
           placeholder="Price"
-          textContentType="none"
           width={120}
         />
         <AppFormPicker
