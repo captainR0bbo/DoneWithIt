@@ -20,33 +20,37 @@ function ListingsScreen({ navigation }) {
   }, []);
 
   return (
-    <Screen style={styles.screen}>
-      {getListingsApi.error && (
-        <>
-          <AppText>Couldn't retrieve the listings.</AppText>
-          <AppButton title="Retry" onPress={getListingsApi.request} />
-        </>
-      )}
+    <>
       <AppActivityIndicator visible={getListingsApi.loading} />
-      {
-        <FlatList
-          data={getListingsApi.data}
-          keyExtractor={(listing) => listing.id.toString()}
-          refreshing={refreshing}
-          onRefresh={getListingsApi.request}
-          renderItem={({ item }) => (
-            //<AppText>{item.images.length ? "true" : "false"}</AppText>
-            <Card
-              title={item.title}
-              subTitle={"$" + item.price}
-              imageUrl={item.images.length ? item.images[0].url : null}
-              onPress={() => navigation.navigate(routes.LISTING_DETAILS, item)}
-              thumbnailUrl={item.images[0].thumbnailUrl}
-            />
-          )}
-        />
-      }
-    </Screen>
+      <Screen style={styles.screen}>
+        {getListingsApi.error && (
+          <>
+            <AppText>Couldn't retrieve the listings.</AppText>
+            <AppButton title="Retry" onPress={getListingsApi.request} />
+          </>
+        )}
+        {
+          <FlatList
+            data={getListingsApi.data}
+            keyExtractor={(listing) => listing.id.toString()}
+            refreshing={refreshing}
+            onRefresh={getListingsApi.request}
+            renderItem={({ item }) => (
+              //<AppText>{item.images.length ? "true" : "false"}</AppText>
+              <Card
+                title={item.title}
+                subTitle={"$" + item.price}
+                imageUrl={item.images.length ? item.images[0].url : null}
+                onPress={() =>
+                  navigation.navigate(routes.LISTING_DETAILS, item)
+                }
+                thumbnailUrl={item.images[0].thumbnailUrl}
+              />
+            )}
+          />
+        }
+      </Screen>
+    </>
   );
 }
 
