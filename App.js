@@ -8,6 +8,7 @@ import ConnectionStatus from "./app/components/ConnectionStatus";
 import AuthNavigator from "./app/navigation/AuthNavigator";
 import AuthContext from "./app/auth/context";
 import authStorage from "./app/auth/storage";
+import navigationRef from "./app/navigation/rootNavigation";
 
 export default function App() {
   const [user, setUser] = useState();
@@ -26,7 +27,7 @@ export default function App() {
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       <ConnectionStatus />
-      <NavigationContainer theme={NavigationTheme}>
+      <NavigationContainer ref={navigationRef} theme={NavigationTheme}>
         {user ? <AppNavigator /> : <AuthNavigator />}
       </NavigationContainer>
     </AuthContext.Provider>
