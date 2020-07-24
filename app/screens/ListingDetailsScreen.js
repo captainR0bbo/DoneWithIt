@@ -1,87 +1,52 @@
 import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { KeyboardAvoidingView, View, StyleSheet } from "react-native";
 import { Image } from "react-native-expo-image-cache";
-import * as Yup from "yup";
 
 import AppText from "../components/AppText";
 import colors from "../config/colors";
 import ListItem from "../components/lists/ListItem";
-import { AppForm, AppFormField, SubmitButton } from "../components/forms";
-import messageApi from "../api/messages";
-import useApi from "../hooks/useApi";
-
-const validationSchema = Yup.object().shape({
-  message: Yup.string().required().label("Message"),
-});
+import ContactSellerForm from "../components/ContactSellerForm";
 
 function ListingDetailsScreen({ route }) {
   const listing = route.params;
 
-  const sendMessageApi = useApi(messageApi.message);
-  const [error, setError] = useState();
-
-  const handleSubmit = async (formData) => {
-    const listingId = listing.id;
-    const message = formData.message;
-    const result = await sendMessageApi.request({ listingId, message });
-
-    if (!result.ok) {
-      handleError(result);
-      return;
-    }
-  };
-
-  const handleError = (result) => {
-    if (result.data) setError(result.data.error);
-    else {
-      setError("An unexpected error occurred.");
-      console.log(result);
-    }
-  };
-
   return (
-    <View>
-      <Image
-        style={styles.image}
-        preview={{ uri: listing.images[0].thumbnailUrl }}
-        tint="light"
-        uri={
-          listing.images.length
-            ? listing.images[0].url
-            : require("../assets/no-image.jpg")
-        }
-      />
-      <View style={styles.detailsContainer}>
-        <AppText style={styles.title}>{listing.title}</AppText>
-        <AppText style={styles.price}>${listing.price}</AppText>
-        <View style={styles.userContainer}>
-          <ListItem
-            image={listing.userImage}
-            title="Mosh Homedani"
-            subTitle="5 listings"
-          />
-        </View>
-      </View>
-      <AppForm
-        initialValues={{
-          message: "",
-        }}
-        onSubmit={handleSubmit}
-        validationSchema={validationSchema}
-      >
-        <AppFormField
-          autoCorrect
-          maxLength={255}
-          name="message"
-          placeholder="Message..."
+    <KeyboardAvoidingView
+      behavior="position"
+      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 100}
+    >
+      <View>
+        <Image
+          style={styles.image}
+          preview={{ uri: listing.images[0].thumbnailUrl }}
+          tint="light"
+          uri={
+            listing.images.length
+              ? listing.images[0].url
+              : require("../assets/no-image.jpg")
+          }
         />
-        <SubmitButton title="Contact seller" />
-      </AppForm>
-    </View>
+        <View style={styles.detailsContainer}>
+          <AppText style={styles.title}>{listing.title}</AppText>
+          <AppText style={styles.price}>${listing.price}</AppText>
+          <View style={styles.userContainer}>
+            <ListItem
+              image={listing.userImage}
+              title="Mosh Homedani"
+              subTitle="5 listings"
+            />
+          </View>
+        </View>
+        <ContactSellerForm listing={listing} />
+      </View>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   detailsContainer: {
     padding: 20,
   },
